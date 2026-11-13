@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="source-sha256" content="c0e97b48cf2d8d47762df3cb79639bd29dfcb4d7680afd31074fa8296d49d288"><title>第04课：Python 程序初体验</title><style>
+:root{color-scheme:light;--accent:#087f8c;--ink:#24344a;--muted:#637185;--line:#dce6eb;--bg:#f3f7f9}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;font:16px/1.85 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg)}a{color:var(--accent);text-underline-offset:3px}a:hover{color:#044f58}.layout{display:grid;grid-template-columns:220px minmax(0,960px);gap:24px;max-width:1250px;margin:auto;padding:28px 24px 60px}aside{position:sticky;top:28px;align-self:start;padding:20px;border:1px solid var(--line);border-radius:12px;background:white;font-size:14px;max-height:calc(100vh - 56px);overflow:auto}.label{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.1em;margin-bottom:14px}.toc ul{list-style:none;padding:0;margin:0}.toc li{margin:9px 0}.toc>ul>li>a{display:none}.toc a{text-decoration:none;display:block;line-height:1.6}main{padding:36px 42px;background:white;border:1px solid var(--line);border-radius:14px;min-width:0}.eyebrow{font-size:12px;letter-spacing:.12em;font-weight:700;color:var(--accent);margin-bottom:16px}h1{font-size:29px;line-height:1.45;margin:0 0 22px}h2{font-size:23px;line-height:1.5;border-top:2px solid var(--line);padding-top:24px;margin:42px 0 18px}h3{font-size:19px;line-height:1.55;margin:26px 0 12px}p{margin:12px 0}strong{color:#0f3449}blockquote{margin:20px 0;padding:13px 18px;background:#eef9fa;border-left:4px solid var(--accent);border-radius:0 8px 8px 0;color:#475a70}blockquote p{margin:0}code{background:#edf3f7;font:0.9em/1.7 Consolas,"Cascadia Code","Microsoft YaHei",monospace;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}pre{margin:18px 0;padding:17px 20px;border:1px solid #314456;border-radius:9px;background:#182a3c;color:#eff8ff;overflow-x:auto;line-height:1.75}pre code{padding:0;border-radius:0;background:none;color:inherit;font-size:14px;white-space:pre;overflow-wrap:normal}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;margin:18px 0 24px}table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.75}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:11px 13px}th{background:#eaf4f6;color:#164858;font-weight:700}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#f9fbfc}td:first-child{min-width:145px}li{margin:7px 0}img{display:block;max-width:100%;height:auto;margin:18px 0;border:1px solid var(--line);border-radius:6px;background:white}footer{font-size:12px;color:var(--muted);margin-top:32px;border-top:1px solid var(--line);padding-top:14px}
+@media(max-width:960px){.layout{display:block;padding:16px;max-width:900px}aside{position:static;max-height:none;margin-bottom:18px}.toc>ul>li>ul{display:flex;flex-wrap:wrap;gap:4px 15px}.toc li{margin:3px 0}main{padding:28px}}@media(max-width:560px){body{font-size:15px}.layout{padding:8px}main{padding:22px 16px}h1{font-size:25px}h2{font-size:21px}table{min-width:440px}pre{padding:14px}}
+@media print{body{background:white;font-size:11pt}.layout{display:block;padding:0;max-width:none}aside,.eyebrow{display:none}main{border:0;padding:0}h2,h3{break-after:avoid}pre,figure,img{break-inside:avoid}pre{background:#f2f5f7;color:#111;border:1px solid #d8e1e7}pre code{white-space:pre-wrap;overflow-wrap:anywhere}.table-wrap{overflow:visible}a{color:inherit}}
+</style></head><body><div class="layout"><aside aria-label="章节目录"><div class="label">PYTHON · 新手复习版</div><div class="toc">
+<ul>
+<li><a href="#04python">第04课：Python 程序初体验</a><ul>
+<li><a href="#1">1. 本课目标</a></li>
+<li><a href="#2">2. 核心知识</a></li>
+<li><a href="#3">3. 代码与输出</a></li>
+<li><a href="#4">4. 易错点</a></li>
+<li><a href="#5">5. 自测与答案</a></li>
+<li><a href="#6">6. 本次优化与资料</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</aside><main><div class="eyebrow">LEARNING JOURNEY / PYTHON / 04</div><article><h1 id="04python">第04课：Python 程序初体验</h1>
+<blockquote>
+<p>基于 <a href="note.md">原笔记</a> 整理，配套代码：<a href="hello.py">hello.py</a>。标注为「补充」的内容用于帮助复习。</p>
+</blockquote>
+<h2 id="1">1. 本课目标</h2>
+<ul>
+<li>认识 Python 解释器，知道 <code>&gt;&gt;&gt;</code> 表示什么。</li>
+<li>理解 <code>print()</code> 可以输出文字。</li>
+<li>能在终端里运行一个 <code>.py</code> 文件。</li>
+</ul>
+<h2 id="2">2. 核心知识</h2>
+<h3 id="21-python">2.1 Python 解释器与两种使用方式</h3>
+<p><strong>解释器是执行 Python 代码的程序。</strong> 编辑器负责写代码，解释器负责执行代码。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>怎么使用</th>
+<th>适合做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>交互模式</td>
+<td>在终端输入 <code>python</code>，再在 <code>&gt;&gt;&gt;</code> 后输入 Python 代码</td>
+<td>临时试验一两条代码</td>
+</tr>
+<tr>
+<td>脚本模式</td>
+<td>把代码保存在 <code>.py</code> 文件中，再运行 <code>python 文件路径</code></td>
+<td>保存、反复运行和维护程序</td>
+</tr>
+</tbody>
+</table></div>
+<p>在 VS Code 的 PowerShell 终端输入；<strong>运行位置：任意目录</strong>：</p>
+<pre><code class="language-powershell">python
+</code></pre>
+<p>通常会看到版本说明和 <code>&gt;&gt;&gt;</code> 提示符。在 <code>&gt;&gt;&gt;</code> 后可以输入 <code>print("hello world")</code>，输入 <code>exit()</code> 并按回车可退出交互模式。</p>
+<h3 id="22-python">2.2 分清终端提示符与 Python 提示符</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>看到的提示符</th>
+<th>所在位置</th>
+<th>应该输入什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PS D:\专业技能&gt;</code></td>
+<td>PowerShell 终端</td>
+<td><code>cd</code>、<code>python 文件路径</code>、<code>git status</code> 等终端命令</td>
+</tr>
+<tr>
+<td><code>D:\专业技能&gt;</code></td>
+<td>Windows CMD 的常见形式</td>
+<td>CMD 支持的终端命令</td>
+</tr>
+<tr>
+<td><code>&gt;&gt;&gt;</code></td>
+<td>标准 Python 交互模式</td>
+<td><code>print(...)</code> 等 Python 代码</td>
+</tr>
+</tbody>
+</table></div>
+<p>这些提示符是程序显示的，<strong>复制命令时不用复制提示符</strong>。不能仅凭“显示了路径”判断环境，要结合 <code>PS</code>、<code>&gt;&gt;&gt;</code> 等完整提示。</p>
+<h3 id="23-print">2.3 读懂 print()</h3>
+<pre><code class="language-python">print(&quot;hello world&quot;)
+</code></pre>
+<p>输出：</p>
+<pre><code class="language-text">hello world
+</code></pre>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>部分</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>print</code></td>
+<td>Python 内置的输出函数</td>
+</tr>
+<tr>
+<td><code>(...)</code></td>
+<td>调用函数，把括号里的内容交给函数处理</td>
+</tr>
+<tr>
+<td><code>"hello world"</code></td>
+<td>字符串，也就是用引号包住的文字</td>
+</tr>
+<tr>
+<td>引号</td>
+<td>标记字符串边界，通常不会作为输出内容显示</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>print()</code> 默认在输出结束后换行；<code>Hello World</code> 与 <code>hello world</code> 的大小写不同，输出也不同。参见 <a href="https://docs.python.org/3.13/library/functions.html#print">Python print() 文档</a>。</p>
+<h2 id="3">3. 代码与输出</h2>
+<h3 id="31-hellopy">3.1 运行当前目录中的 hello.py</h3>
+<p>同目录 <code>hello.py</code> 的现有内容是：</p>
+<pre><code class="language-python">print(&quot;hello world&quot;)
+</code></pre>
+<p><strong>运行位置：VS Code 的 PowerShell 终端。</strong> 先进入文件所在目录，再执行脚本：</p>
+<pre><code class="language-powershell">cd &quot;D:\专业技能\learning-journey\python\黑马python+AI\04&quot;
+python .\hello.py
+</code></pre>
+<ul>
+<li><code>cd</code>：进入指定文件夹。</li>
+<li><code>python</code>：启动终端当前找到的 Python 解释器。</li>
+<li><code>.\hello.py</code>：当前目录中的 <code>hello.py</code>；<code>.\</code> 表示从当前目录开始查找。</li>
+</ul>
+<p>输出：</p>
+<pre><code class="language-text">hello world
+</code></pre>
+<h3 id="32">3.2 补充：直接使用绝对路径</h3>
+<p><strong>运行位置：任意目录的 PowerShell 终端。</strong></p>
+<pre><code class="language-powershell">python &quot;D:\专业技能\learning-journey\python\黑马python+AI\04\hello.py&quot;
+</code></pre>
+<p>输出仍然是 <code>hello world</code>。文件路径较长时，用英文双引号包住路径，尤其适合包含空格的目录。</p>
+<p>原笔记里“在文件资源管理器地址栏输入 <code>cmd</code>”也是进入文件所在目录的一种方式。当前使用 VS Code 时，直接使用内置终端即可，以上示例统一采用 PowerShell。</p>
+<h2 id="4">4. 易错点</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>容易混淆</th>
+<th>正确理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>在 <code>&gt;&gt;&gt;</code> 后输入 <code>python hello.py</code></td>
+<td>这是终端命令，应先退出交互模式再执行</td>
+</tr>
+<tr>
+<td>在 PowerShell 里直接输入 <code>print(...)</code></td>
+<td>这是 Python 代码，应写进 <code>.py</code> 文件或 Python 交互模式</td>
+</tr>
+<tr>
+<td>以为修改文件后输出会立即变化</td>
+<td>先保存文件，再重新运行</td>
+</tr>
+<tr>
+<td>认为只有多行程序才需要 <code>.py</code> 文件</td>
+<td>一行程序也能保存在 <code>.py</code> 文件中</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="5">5. 自测与答案</h2>
+<ol>
+<li>
+<p><strong><code>&gt;&gt;&gt;</code> 表示什么？如何回到终端？</strong><br />
+   表示正在 Python 交互模式；输入 <code>exit()</code> 并按回车退出。</p>
+</li>
+<li>
+<p><strong>执行 <code>python .\hello.py</code> 时，<code>hello.py</code> 从哪里查找？</strong><br />
+   从当前工作目录查找；如果找不到，检查当前目录，或改用文件的绝对路径。</p>
+</li>
+</ol>
+<h2 id="6">6. 本次优化与资料</h2>
+<ul>
+<li>修复原笔记 <code>##3</code> 缺少空格的问题，统一标题层级。</li>
+<li>将终端、交互模式、脚本模式分开说明，运行示例与现有 <code>hello.py</code> 的输出保持一致。</li>
+<li><strong>补充：</strong>提示符辨认、路径解释和自测，未修改原代码。</li>
+<li>官方资料：<a href="https://docs.python.org/3.13/tutorial/interpreter.html">Python 解释器使用</a>、<a href="https://docs.python.org/3.13/tutorial/appendix.html#interactive-mode">交互模式</a>。</li>
+</ul></article><footer>由同目录 note-优化版.md 生成的同正文阅读版 · 图片已内嵌，可离线阅读。原 note.md 与配套代码保留。</footer></main></div></body></html>
