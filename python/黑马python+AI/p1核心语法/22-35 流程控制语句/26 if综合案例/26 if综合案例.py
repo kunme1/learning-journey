@@ -24,6 +24,6 @@ if dianliang <2880:
 elif 2880 <= dianliang <= 4800:
     print(f"电费是 {2880 * 0.4883 + (dianliang - 2880) * 0.5383}")
 elif 4800 < dianliang:
-    print(f"电费是 {2880 * 0.4883 + (4800 - 2880) * 0.5383 +(dianliang - 2880) * 0.7883}")
+    print(f"电费是 {2880 * 0.4883 + (4800 - 2880) * 0.5383 +(dianliang - 4800) * 0.7883}")
 else:
     print("输入的电量不合理")
