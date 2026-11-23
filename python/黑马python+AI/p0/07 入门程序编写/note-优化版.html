@@ -1,36 +1,50 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="source-sha256" content="e61d2881cdb8547c4889596828992e7c3ea867fd8e7b627d87f79f430ba151bc"><title>第07课：入门程序编写与注释</title><style>
-:root{color-scheme:light;--accent:#087f8c;--ink:#24344a;--muted:#637185;--line:#dce6eb;--bg:#f3f7f9}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;font:16px/1.85 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg)}a{color:var(--accent);text-underline-offset:3px}a:hover{color:#044f58}.layout{display:grid;grid-template-columns:220px minmax(0,960px);gap:24px;max-width:1250px;margin:auto;padding:28px 24px 60px}aside{position:sticky;top:28px;align-self:start;padding:20px;border:1px solid var(--line);border-radius:12px;background:white;font-size:14px;max-height:calc(100vh - 56px);overflow:auto}.label{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.1em;margin-bottom:14px}.toc ul{list-style:none;padding:0;margin:0}.toc li{margin:9px 0}.toc>ul>li>a{display:none}.toc a{text-decoration:none;display:block;line-height:1.6}main{padding:36px 42px;background:white;border:1px solid var(--line);border-radius:14px;min-width:0}.eyebrow{font-size:12px;letter-spacing:.12em;font-weight:700;color:var(--accent);margin-bottom:16px}h1{font-size:29px;line-height:1.45;margin:0 0 22px}h2{font-size:23px;line-height:1.5;border-top:2px solid var(--line);padding-top:24px;margin:42px 0 18px}h3{font-size:19px;line-height:1.55;margin:26px 0 12px}p{margin:12px 0}strong{color:#0f3449}blockquote{margin:20px 0;padding:13px 18px;background:#eef9fa;border-left:4px solid var(--accent);border-radius:0 8px 8px 0;color:#475a70}blockquote p{margin:0}code{background:#edf3f7;font:0.9em/1.7 Consolas,"Cascadia Code","Microsoft YaHei",monospace;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}pre{margin:18px 0;padding:17px 20px;border:1px solid #314456;border-radius:9px;background:#182a3c;color:#eff8ff;overflow-x:auto;line-height:1.75}pre code{padding:0;border-radius:0;background:none;color:inherit;font-size:14px;white-space:pre;overflow-wrap:normal}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;margin:18px 0 24px}table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.75}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:11px 13px}th{background:#eaf4f6;color:#164858;font-weight:700}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#f9fbfc}td:first-child{min-width:145px}li{margin:7px 0}img{display:block;max-width:100%;height:auto;margin:18px 0;border:1px solid var(--line);border-radius:6px;background:white}footer{font-size:12px;color:var(--muted);margin-top:32px;border-top:1px solid var(--line);padding-top:14px}
-@media(max-width:960px){.layout{display:block;padding:16px;max-width:900px}aside{position:static;max-height:none;margin-bottom:18px}.toc>ul>li>ul{display:flex;flex-wrap:wrap;gap:4px 15px}.toc li{margin:3px 0}main{padding:28px}}@media(max-width:560px){body{font-size:15px}.layout{padding:8px}main{padding:22px 16px}h1{font-size:25px}h2{font-size:21px}table{min-width:440px}pre{padding:14px}}
-@media print{body{background:white;font-size:11pt}.layout{display:block;padding:0;max-width:none}aside,.eyebrow{display:none}main{border:0;padding:0}h2,h3{break-after:avoid}pre,figure,img{break-inside:avoid}pre{background:#f2f5f7;color:#111;border:1px solid #d8e1e7}pre code{white-space:pre-wrap;overflow-wrap:anywhere}.table-wrap{overflow:visible}a{color:inherit}}
-</style></head><body><div class="layout"><aside aria-label="章节目录"><div class="label">PYTHON · 新手复习版</div><div class="toc">
-<ul>
-<li><a href="#07">第07课：入门程序编写与注释</a><ul>
-<li><a href="#1">1. 本课目标</a></li>
-<li><a href="#2">2. 核心知识</a></li>
-<li><a href="#3">3. 代码与输出</a></li>
-<li><a href="#4">4. 易错点</a></li>
-<li><a href="#5">5. 自测与答案</a></li>
-<li><a href="#6">6. 本次优化与资料</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</aside><main><div class="eyebrow">LEARNING JOURNEY / PYTHON / 07</div><article><h1 id="07">第07课：入门程序编写与注释</h1>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第07课：入门程序编写与注释</title>
+<style>
+:root{color-scheme:light dark;font-family:system-ui,"Microsoft YaHei","PingFang SC",sans-serif;line-height:1.8;color:#263348;background:#f3f5f8}
+body{margin:0;padding:28px 18px}
+main{max-width:1000px;box-sizing:border-box;margin:auto;padding:36px 46px;background:#fff;border:1px solid #e0e6ed;border-radius:12px}
+h1,h2,h3{color:#18314f;line-height:1.45;scroll-margin-top:20px}
+h1{font-size:1.9rem;margin-top:0}h2{font-size:1.4rem;margin-top:2rem;border-bottom:1px solid #e6ebf1;padding-bottom:.3rem}h3{font-size:1.12rem;margin-top:1.5rem}
+p,li{overflow-wrap:anywhere}li{margin:.35rem 0}a{color:#155fc0;text-underline-offset:3px}
+blockquote{margin:1rem 0;padding:.2rem 1rem;border-left:4px solid #9bb7d8;background:#f6f8fb;color:#536077}
+code{font-family:Consolas,"Microsoft YaHei",monospace;font-size:.91em;background:#eef2f6;padding:.1em .3em;border-radius:4px}
+pre{padding:16px 18px;background:#eef2f6;border-radius:8px;overflow-x:auto;line-height:1.65}pre code{padding:0;white-space:pre;overflow-wrap:normal}
+table{width:100%;border-collapse:collapse;font-size:.94rem}th,td{border:1px solid #dce3eb;padding:9px 12px;text-align:left;vertical-align:top}th{background:#eef2f6}
+@media(max-width:640px){body{padding:10px}main{padding:22px 18px}h1{font-size:1.55rem}h2{font-size:1.25rem}}
+@media(prefers-color-scheme:dark){:root{color:#dce4ef;background:#131b26}main{background:#1c2735;border-color:#3b4658}h1,h2,h3{color:#edf3fc}a{color:#91c0ff}blockquote{background:#243246;color:#c0cee0}code,pre,th{background:#29384c}th,td,h2{border-color:#46566e}}
+
+img{max-width:100%;height:auto;display:block;margin:18px auto}
+.missing-image{padding:14px 18px;border:1px solid #b78022;border-radius:8px;background:#fff8e8;color:#6e4b13}
+table{display:block;max-width:100%;overflow-x:auto}
+th,td{overflow-wrap:anywhere}
+@media(prefers-color-scheme:dark){.missing-image{background:#392e1a;color:#f2d292;border-color:#9b792f}}
+
+</style></head><body><main><h1 id="第07课入门程序编写与注释">第07课：入门程序编写与注释</h1>
 <blockquote>
+<p>本次整理日期：2026-11-14（北京时间）；历史资料补齐，原学习日期未确认。来源为本课同目录原笔记、代码和配图。</p>
 <p>基于 <a href="note.md">原笔记</a> 整理，配套代码：<a href="01.快速入门.py">01.快速入门.py</a>。标注为「补充」的示例与现有脚本分开说明。</p>
+<p>排版调整：2026-11-14（北京时间）。以原笔记顺序为主线，图文和补充就近组织；沿用原有转写与验证记录，本次未修改原始材料或重新执行程序。</p>
 </blockquote>
-<h2 id="1">1. 本课目标</h2>
+<h2 id="创建项目">创建项目</h2>
+<p>跳过</p>
+<h3 id="补充本课目标">补充：本课目标</h3>
 <ul>
 <li>将程序保存在 <code>.py</code> 文件中，并能运行。</li>
 <li>使用 <code>#</code> 添加注释。</li>
 <li>知道快捷键是编辑器操作，理解分行与分号的基本用法。</li>
 </ul>
-<h2 id="2">2. 核心知识</h2>
-<h3 id="21-python">2.1 项目与 Python 文件</h3>
+<h3 id="补充项目与-python-文件">补充：项目与 Python 文件</h3>
 <p>项目文件夹用于组织代码、笔记和图片。<strong>本次已经有学习仓库，因此继续在现有课程目录里写练习，无需重复创建 PyCharm 项目。</strong></p>
 <p><code>01.快速入门.py</code> 中的 <code>.py</code> 是 Python 源文件扩展名；前面的 <code>01.快速入门</code> 是你给文件取的名称。</p>
-<h3 id="22">2.2 注释怎么写</h3>
+<h2 id="注释">注释</h2>
+<pre><code class="language-python"># 后面为注释,py解释器会忽略
+</code></pre>
+<p>多条简单语句通常分行书写，不需要分号；写在同一行时可用分号分隔，相关区别见下方补充。</p>
+<h3 id="补充注释怎么写">补充：注释怎么写</h3>
 <p>Python 中，<strong>字符串之外的 <code>#</code> 开始一段注释，直到该行结束</strong>。注释不会作为普通语句执行，可说明需求和代码用途。</p>
 <pre><code class="language-python"># 需求：在控制台输出一句问候语
 print(&quot;Hello World,Hello Python&quot;)
@@ -38,7 +52,7 @@ print(&quot;Hello World,Hello Python&quot;)
 <p>输出：</p>
 <pre><code class="language-text">Hello World,Hello Python
 </code></pre>
-<div class="table-wrap"><table>
+<table>
 <thead>
 <tr>
 <th>写法</th>
@@ -59,14 +73,41 @@ print(&quot;Hello World,Hello Python&quot;)
 <td>是字符串内容，不会开始注释</td>
 </tr>
 </tbody>
-</table></div>
-<h3 id="23">2.3 快速切换行注释</h3>
+</table>
+<h3 id="补充快速切换行注释">补充：快速切换行注释</h3>
 <p><strong>操作位置：VS Code 编辑器，不是 Python 代码或终端。</strong></p>
 <p>在默认 Windows 快捷键下，选中一行或多行代码，按 <strong>Ctrl + /</strong>，可以切换行注释；如果使用了自定义快捷键，以实际设置为准。</p>
 <p>原笔记中的 <code>cltr</code> 应改为 <strong>Ctrl</strong>。快捷键说明不应放在 <code>python</code> 代码块中，否则看起来像需要执行的代码。</p>
-<h3 id="24">2.4 一行一句与分号</h3>
+<h3 id="补充现有脚本的实际行为">补充：现有脚本的实际行为</h3>
+<p><a href="01.快速入门.py">01.快速入门.py</a> 中的输出语句是：</p>
+<pre><code class="language-python">print(&quot;Hello World,Hello Python&quot;)
+</code></pre>
+<p>它输出的是<strong>一行文字</strong>，逗号位于字符串里面，不会产生换行。</p>
+<p><strong>运行位置：VS Code 的 PowerShell 终端。</strong></p>
+<pre><code class="language-powershell">cd &quot;D:\专业技能\learning-journey\python\黑马python+AI\p0\07 入门程序编写&quot;
+python &quot;.\01.快速入门.py&quot;
+</code></pre>
+<p>输出：</p>
+<pre><code class="language-text">Hello World,Hello Python
+</code></pre>
+<h3 id="补充如果希望输出两行">补充：如果希望输出两行</h3>
+<p>下面是独立练习示例，不表示现有脚本已经被修改：</p>
+<pre><code class="language-python">print(&quot;Hello World&quot;)
+print(&quot;Hello Python&quot;)
+</code></pre>
+<p>输出：</p>
+<pre><code class="language-text">Hello World
+Hello Python
+</code></pre>
+<p>这是因为每次 <code>print()</code> 默认会在输出结束后换行。</p>
+<h3 id="补充本课代码检查结论">补充：本课代码检查结论</h3>
+<p><strong>命名、表达和效率：</strong>当前可执行代码没有自定义变量，无需强行改名；未发现需要修复的语法或逻辑问题。print与引号拼写正常，无内置名称遮蔽。多个输出示例保留作教学比较；固定少量输出无值得提速的瓶颈，没有做性能基准。</p>
+<h2 id="注意">注意</h2>
+<p>1.后缀名 .py
+2. 分号可分隔同一行的简单语句；普通分行写法通常不用分号，续行时需另作区分。</p>
+<h3 id="补充一行一句与分号">补充：一行一句与分号</h3>
 <p>入门练习建议 <strong>一行写一句简单语句，通常省略分号</strong>。</p>
-<div class="table-wrap"><table>
+<table>
 <thead>
 <tr>
 <th>情况</th>
@@ -87,32 +128,9 @@ print(&quot;Hello World,Hello Python&quot;)
 <td>可能仍是一条语句；不能把所有物理换行都当作语句结束</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 <p>最后一种属于<strong>补充提醒</strong>，第08课会通过续行示例说明。语法依据见 <a href="https://docs.python.org/3.13/reference/lexical_analysis.html#line-structure">Python 行结构说明</a>。</p>
-<h2 id="3">3. 代码与输出</h2>
-<h3 id="31">3.1 现有脚本的实际行为</h3>
-<p><a href="01.快速入门.py">01.快速入门.py</a> 中的输出语句是：</p>
-<pre><code class="language-python">print(&quot;Hello World,Hello Python&quot;)
-</code></pre>
-<p>它输出的是<strong>一行文字</strong>，逗号位于字符串里面，不会产生换行。</p>
-<p><strong>运行位置：VS Code 的 PowerShell 终端。</strong></p>
-<pre><code class="language-powershell">cd &quot;D:\专业技能\learning-journey\python\黑马python+AI\07 入门程序编写&quot;
-python &quot;.\01.快速入门.py&quot;
-</code></pre>
-<p>输出：</p>
-<pre><code class="language-text">Hello World,Hello Python
-</code></pre>
-<h3 id="32">3.2 补充：如果希望输出两行</h3>
-<p>下面是独立练习示例，不表示现有脚本已经被修改：</p>
-<pre><code class="language-python">print(&quot;Hello World&quot;)
-print(&quot;Hello Python&quot;)
-</code></pre>
-<p>输出：</p>
-<pre><code class="language-text">Hello World
-Hello Python
-</code></pre>
-<p>这是因为每次 <code>print()</code> 默认会在输出结束后换行。</p>
-<h3 id="33">3.3 补充：分号可以分隔同一行的简单语句</h3>
+<h3 id="补充分号可以分隔同一行的简单语句">补充：分号可以分隔同一行的简单语句</h3>
 <pre><code class="language-python">print(&quot;Hello World&quot;); print(&quot;Hello Python&quot;)
 </code></pre>
 <p>输出与上一段相同：</p>
@@ -120,8 +138,8 @@ Hello Python
 Hello Python
 </code></pre>
 <p><strong>代码写在同一行，不代表输出一定在同一行。</strong> 输出如何换行取决于执行的代码。</p>
-<h2 id="4">4. 易错点</h2>
-<div class="table-wrap"><table>
+<h3 id="补充易错点">补充：易错点</h3>
+<table>
 <thead>
 <tr>
 <th>容易混淆</th>
@@ -150,8 +168,8 @@ Hello Python
 <td>字符串定界符要用英文半角引号 <code>" "</code> 或 <code>' '</code></td>
 </tr>
 </tbody>
-</table></div>
-<h2 id="5">5. 自测与答案</h2>
+</table>
+<h2 id="5-自测与答案">5. 自测与答案</h2>
 <ol>
 <li>
 <p><strong><code>print("# 你好")</code> 中的 <code>#</code> 是注释吗？</strong><br />
@@ -162,10 +180,18 @@ Hello Python
    两行。分号只分隔代码中的简单语句，两个 <code>print()</code> 默认各自输出并换行。</p>
 </li>
 </ol>
-<h2 id="6">6. 本次优化与资料</h2>
+<h2 id="6-本次优化与资料">6. 本次优化与资料</h2>
 <ul>
 <li>修正 <code>cltr</code> 拼写，把快捷键从 Python 代码块移到操作说明。</li>
 <li>将“换行作为终止符”改为适用范围更准确的解释。</li>
 <li>对齐现有脚本的一行输出，并以<strong>补充</strong>形式提供两行输出与分号对比。</li>
 <li>官方资料：<a href="https://docs.python.org/3.13/reference/lexical_analysis.html#comments">Python 注释规则</a>、<a href="https://docs.python.org/3.13/reference/simple_stmts.html">简单语句</a>、<a href="https://docs.python.org/3.13/library/functions.html#print">print()</a>。</li>
-</ul></article><footer>由同目录 note-优化版.md 生成的同正文阅读版 · 图片已内嵌，可离线阅读。原 note.md 与配套代码保留。</footer></main></div></body></html>
+</ul>
+<h2 id="附既有源码与核验记录-当前源文件01快速入门py">附：既有源码与核验记录 / 当前源文件：01.快速入门.py</h2>
+<pre><code class="language-python"># 需求:在控制台中输出Hello World,Hello Python
+print(&quot;Hello World,Hello Python&quot;)
+</code></pre>
+<p>使用内存执行实际核验，输出如下；未修改原文件：</p>
+<pre><code class="language-text">Hello World,Hello Python
+</code></pre>
+<p><strong>命名、表达和效率：</strong>当前可执行代码没有自定义变量，无需强行改名；未发现需要修复的语法或逻辑问题。print与引号拼写正常，无内置名称遮蔽。多个输出示例保留作教学比较；固定少量输出无值得提速的瓶颈，没有做性能基准。</p></main></body></html>

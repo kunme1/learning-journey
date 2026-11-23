@@ -1,0 +1,292 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>55 案例测试（优化版）</title><style>body{margin:0;color:#233249;background:#f3f6fa;font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;line-height:1.85}main{max-width:1140px;margin:25px auto;padding:32px 40px;background:white;border-radius:12px}h1,h2,h3{line-height:1.4;color:#173051}h2{margin-top:2em;border-bottom:1px solid #dce3ed;padding-bottom:.4em}h3{margin-top:1.7em}a{color:#1565ad;text-decoration:none}a:hover{text-decoration:underline}img{max-width:100%;height:auto;border:1px solid #dce3ed;border-radius:5px}pre{padding:16px;background:#f0f4f8;border-radius:6px;overflow-x:auto;line-height:1.5}code{font-family:Consolas,"Microsoft YaHei",monospace;font-size:.92em}p code,td code,li code{background:#edf2f8;padding:1px 4px}table{border-collapse:collapse;display:block;overflow-x:auto;width:100%;font-size:.91em;margin:20px 0}td,th{padding:9px 11px;border:1px solid #d8e1ec;text-align:left;vertical-align:top}th{background:#eaf0f8}blockquote{margin:18px 0;padding:10px 16px;border-left:4px solid #83a7d2;background:#f3f7fc}li{margin:.35em 0}@media(max-width:720px){main{margin:0;padding:20px 15px;border-radius:0}}</style></head><body><main><h1>55 案例测试（优化版）</h1>
+<blockquote>
+<p>整理日期：2026-11-23（北京时间）；本批截止／首次读取快照：2026-11-23T15:54:33+08:00。历史资料补齐，原学习日期未确认。相关问答按共享记录的11月22日／23日分别列入日报，不把这些课节全记为今日新学。
+来源：<a href="55 案例测试.py">55 案例测试.py</a>；<a href="55 案例测试.md">55 案例测试.md</a>。原始文件保留，下面“补充／纠正／前瞻优化”是整理说明，不表示用户已掌握或执行。</p>
+</blockquote>
+<h2>当前测试版与上一课的区别</h2>
+<p>本课原.md只有标题，没有图片。55源代码已把菜单移入while，并在修改不存在商品时continue；查询已写keys()，不会重演54的TypeError。添加、修改、删除、查询、退出和非法编号路径是本课复习重点。</p>
+<pre><code class="language-python">"""
+案例：
+
+开发一个购物车管理系统，实现商品信息的添加、修改、删除、查询和统计功能。系统使用嵌套字典结构存储商品数据，通过控制台菜单与用户交互。
+
+具体功能如下：
+
+    1. 添加购物车：用户根据提示录入商品名称、以及该商品的价格、数量，保存该商品信息到购物车。
+
+    2. 修改购物车：要求用户输入要修改的购物车商品名称，然后再提示输入该商品的价格、数量，输入完成后修改该商品信息。
+
+    3. 删除购物车：要求用户输入要删除的购物车商品名称，根据名称删除购物车中的商品。
+
+    4. 查询购物车：将购物车中的商品信息展示出来，格式为："商品名称：xxx，商品价格：xxx，商品数量：xxx"。
+
+    5. 退出购物车
+
+结构：shopping_cart = {"Meta80": {"price": 6999, "num": 2}, "鼠标": {...}}
+
+"""
+
+shopping_cart = {}
+
+"""
+可以使用这种方法输入多行字符串,并且可以使用 Alt + Shift 进入列编辑模式
+"""
+
+menu ="""
+######## 购物车系统 ########
+#       1.添加购物车       #
+#       2.修改购物车       #
+#       3.删除购物车       #
+#       4.查询购物车       #
+#       5.退出购物车       #
+############################
+"""
+# 1.制作菜单
+print("欢迎使用购物车管理系统 ~")
+print()
+
+
+
+# 2.执行的具体内容
+while True:
+    print(menu)
+    choice = input("请选择要执行的操作(1-5):")
+
+    match choice:
+        case "1":# 添加购物车
+            goods_name = input("请输入商品名称: ")
+            goods_price = float(input("请输入商品价格: "))
+            goods_num = int(input("请输入商品数量: "))
+            # 如果商品存在则不执行添加,提示信息
+            # if goods_name in shopping_cart""".keys()""":# in 用在字典上时，默认就检查“键”是否存在
+            if goods_name in shopping_cart:
+                print("商品已存在,请重新选择")
+            else:
+                shopping_cart[goods_name] = {"price" : goods_price, "num" : goods_num }
+                print("商品已添加完毕 ~")
+
+        case "2":# 修改购物车
+            goods_name = input("请输入要修改的商品名称: ")
+
+            if goods_name not in shopping_cart:
+                print("商品不存在,请重新选择")
+                continue
+
+            goods_price = float(input("请输入商品最新的价格: "))
+            goods_num = int(input("请输入商品最新的数量: "))
+            shopping_cart[goods_name] = {"price" : goods_price, "num" : goods_num }
+            print("商品已修改完毕 ~")
+
+        case "3":# 删除购物车
+            goods_name = input("请输入要删除的商品名称: ")
+            if goods_name not in shopping_cart:
+                print("商品不存在,请重新选择")
+            else:
+                del shopping_cart[goods_name]
+                print("商品已删除完毕 ~")
+        case "4":# 查询购物车
+            for goods_name in shopping_cart.keys():
+                goods_info = shopping_cart[goods_name]
+                print(f"商品名称: {goods_name}, 商品价格:{goods_info["price"]}, 商品数量: {goods_info["num"]}")
+        case "5":# 退出购物车
+            print("Bye ~")
+            break
+        case _:# 匹配其他所有情况
+            print("非法操作,不支持")
+</code></pre>
+<h3>Python优化版对照：55 案例测试.py</h3>
+<p>查询已补()，有效输入流程通过；优化提前查重复、items解包及受控重输。 配套文件：<a href="55 案例测试-优化版.py">55 案例测试-优化版.py</a>。</p>
+<p>新增函数与try/except负责重输，items()直接取键值；价格有限非负、数量正整数是优化版新增输入规则。重复商品不再读价格数量；不存在修改直接返回菜单。提示和输入时机发生变化，合法商品数据操作仍一致；不读写文件。</p>
+<pre><code class="language-python">"""来源：55 案例测试.py；配套：55 案例测试-优化版.md。
+整理日期：2026-11-23；原始练习不修改。
+相关改写的原因和行为差异见就近中文说明。
+"""
+
+from math import isfinite
+
+
+def read_product():
+    """读取价格、数量；新增规则：价格有限且非负，数量为正整数。"""
+    # 原float/int直接转换会因文字输入退出。新try/except提示重输，成功才返回。
+    # 行为变化：拒绝负价、非有限价和非正数量；无业务持久化或网络副作用。
+    while True:
+        try:
+            price = float(input("请输入商品价格: "))
+            quantity = int(input("请输入商品数量: "))
+        except ValueError:
+            print("价格须为数字，数量须为整数，请重新输入")
+            continue
+        if isfinite(price) and price &gt;= 0 and quantity &gt; 0:
+            return {"price": price, "num": quantity}
+        print("价格须有限且非负，数量须为正整数")
+
+
+shopping_cart = {}
+menu = "1.添加购物车  2.修改购物车  3.删除购物车  4.查询购物车  5.退出购物车"
+print("欢迎使用购物车管理系统 ~")
+while True:
+    # 原54菜单只在循环前显示；现在每轮显示，改变提示时机，方便继续选择。
+    print(menu)
+    choice = input("请选择要执行的操作(1-5):")
+    match choice:
+        case "1":
+            goods_name = input("请输入商品名称: ")
+            # 原先先读价格数量才查重复；现在提前判断，重复时少两次无效输入。
+            if goods_name in shopping_cart:
+                print("商品已存在,请重新选择")
+                continue
+            shopping_cart[goods_name] = read_product()
+            print("商品已添加完毕 ~")
+        case "2":
+            goods_name = input("请输入要修改的商品名称: ")
+            # 先确认存在，再读取新值；continue回菜单，不是退出整个系统。
+            if goods_name not in shopping_cart:
+                print("商品不存在,请重新选择")
+                continue
+            shopping_cart[goods_name] = read_product()
+            print("商品已修改完毕 ~")
+        case "3":
+            goods_name = input("请输入要删除的商品名称: ")
+            if goods_name not in shopping_cart:
+                print("商品不存在,请重新选择")
+            else:
+                del shopping_cart[goods_name]
+                print("商品已删除完毕 ~")
+        case "4":
+            # 原54遍历shopping_cart.keys（方法对象）会TypeError；55已补()。
+            # items一次取得名称与信息，替代keys()+下标；等价于55的合法查询。
+            if not shopping_cart:
+                print("购物车为空")
+            for goods_name, goods_info in shopping_cart.items():
+                # 外双内单，兼容Python3.10/3.11；原同引号在3.12+本来合法。
+                print(f"商品名称: {goods_name}, 商品价格:{goods_info['price']}, 商品数量: {goods_info['num']}")
+        case "5":
+            print("Bye ~")
+            break
+        case _:
+            print("非法操作,不支持")
+</code></pre>
+<p>以上是完整可独立运行的建议文件；原源码见相邻原始片段和文末备查。</p>
+<h2>代码检查、命名与实际输出</h2>
+<p>查询已补()，有效输入流程通过；优化提前查重复、items解包及受控重输。</p>
+<table>
+<thead>
+<tr>
+<th>原名</th>
+<th>建议</th>
+<th>中文含义</th>
+<th>文件位置</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shopping_cart、goods_info</td>
+<td>保留</td>
+<td>购物车／商品信息</td>
+<td>整个程序</td>
+<td>拼写和下划线规范正确</td>
+</tr>
+</tbody>
+</table>
+<p>对应Python文件已经同步原写法、改写原因与行为差异。改名／更短不自动等于更快；具体收益与限制见相应案例附近，没有做性能基准。</p>
+<p>交互路径通过模拟input验证；选4可复现54查询TypeError，55／56的合法流程结果见日报，未在用户终端现场操作。</p>
+<h2>完整原始源码备查</h2>
+<p>正文按原知识点顺序保留图文，并在相关案例附近解释代码；下方逐文件保留完整原始代码（含学习注释），不激活已注释片段。</p>
+<h3><a href="55 案例测试.py">55 案例测试.py</a></h3>
+<pre><code class="language-python">"""
+案例：
+
+开发一个购物车管理系统，实现商品信息的添加、修改、删除、查询和统计功能。系统使用嵌套字典结构存储商品数据，通过控制台菜单与用户交互。
+
+具体功能如下：
+
+    1. 添加购物车：用户根据提示录入商品名称、以及该商品的价格、数量，保存该商品信息到购物车。
+
+    2. 修改购物车：要求用户输入要修改的购物车商品名称，然后再提示输入该商品的价格、数量，输入完成后修改该商品信息。
+
+    3. 删除购物车：要求用户输入要删除的购物车商品名称，根据名称删除购物车中的商品。
+
+    4. 查询购物车：将购物车中的商品信息展示出来，格式为："商品名称：xxx，商品价格：xxx，商品数量：xxx"。
+
+    5. 退出购物车
+
+结构：shopping_cart = {"Meta80": {"price": 6999, "num": 2}, "鼠标": {...}}
+
+"""
+
+shopping_cart = {}
+
+"""
+可以使用这种方法输入多行字符串,并且可以使用 Alt + Shift 进入列编辑模式
+"""
+
+menu ="""
+######## 购物车系统 ########
+#       1.添加购物车       #
+#       2.修改购物车       #
+#       3.删除购物车       #
+#       4.查询购物车       #
+#       5.退出购物车       #
+############################
+"""
+# 1.制作菜单
+print("欢迎使用购物车管理系统 ~")
+print()
+
+
+
+# 2.执行的具体内容
+while True:
+    print(menu)
+    choice = input("请选择要执行的操作(1-5):")
+
+    match choice:
+        case "1":# 添加购物车
+            goods_name = input("请输入商品名称: ")
+            goods_price = float(input("请输入商品价格: "))
+            goods_num = int(input("请输入商品数量: "))
+            # 如果商品存在则不执行添加,提示信息
+            # if goods_name in shopping_cart""".keys()""":# in 用在字典上时，默认就检查“键”是否存在
+            if goods_name in shopping_cart:
+                print("商品已存在,请重新选择")
+            else:
+                shopping_cart[goods_name] = {"price" : goods_price, "num" : goods_num }
+                print("商品已添加完毕 ~")
+
+        case "2":# 修改购物车
+            goods_name = input("请输入要修改的商品名称: ")
+
+            if goods_name not in shopping_cart:
+                print("商品不存在,请重新选择")
+                continue
+
+            goods_price = float(input("请输入商品最新的价格: "))
+            goods_num = int(input("请输入商品最新的数量: "))
+            shopping_cart[goods_name] = {"price" : goods_price, "num" : goods_num }
+            print("商品已修改完毕 ~")
+
+        case "3":# 删除购物车
+            goods_name = input("请输入要删除的商品名称: ")
+            if goods_name not in shopping_cart:
+                print("商品不存在,请重新选择")
+            else:
+                del shopping_cart[goods_name]
+                print("商品已删除完毕 ~")
+        case "4":# 查询购物车
+            for goods_name in shopping_cart.keys():
+                goods_info = shopping_cart[goods_name]
+                print(f"商品名称: {goods_name}, 商品价格:{goods_info["price"]}, 商品数量: {goods_info["num"]}")
+        case "5":# 退出购物车
+            print("Bye ~")
+            break
+        case _:# 匹配其他所有情况
+            print("非法操作,不支持")
+</code></pre>
+<h2>参考与补漏</h2>
+<p>本次实际对照以下对应小节；资料为Video2Book二次整理，不把后续整册内容计作本课遗漏。具体补漏／纠正已经放在知识点附近。</p>
+<ul>
+<li><a href="../../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/textbooks/模块09_数据容器：元组、集合、字典与容器选型对比_精读全书.md">模块09_数据容器：元组、集合、字典与容器选型对比_精读全书.md</a>：P55，本次实际读取的对应段落，1791—1894行。</li>
+<li><a href="../../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/notes/笔记05_数据容器体系列表字符串元组集合与字典_笔记.md">笔记05_数据容器体系列表字符串元组集合与字典_笔记.md</a>：437—449行，对应复习小节。</li>
+</ul>
+<p>原始材料与参考资料保持只读；本稿新增示例的运行边界见代码检查。</p></main></body></html>

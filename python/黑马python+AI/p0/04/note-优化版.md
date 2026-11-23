@@ -1,16 +1,24 @@
 # 第04课：Python 程序初体验
 
+> 本次整理日期：2026-11-14（北京时间）；历史资料补齐，原学习日期未确认。来源为本课同目录原笔记、代码和配图。
+
 > 基于 [原笔记](note.md) 整理，配套代码：[hello.py](hello.py)。标注为「补充」的内容用于帮助复习。
 
-## 1. 本课目标
+> 排版调整：2026-11-14（北京时间）。以原笔记顺序为主线，图文和补充就近组织；沿用原有转写与验证记录，本次未修改原始材料或重新执行程序。
+
+## 1 py解释器，初体验
+
+cmd里面输入python进入python解释器，显示版本信息
+‘>>>’说明在python解释器中，'exit()'退出
+需要结合完整提示符辨认环境：PowerShell、CMD 与 Python 交互提示符的区别见本节补充。
+
+### 补充：本课目标
 
 - 认识 Python 解释器，知道 `>>>` 表示什么。
 - 理解 `print()` 可以输出文字。
 - 能在终端里运行一个 `.py` 文件。
 
-## 2. 核心知识
-
-### 2.1 Python 解释器与两种使用方式
+### 补充：Python 解释器与两种使用方式
 
 **解释器是执行 Python 代码的程序。** 编辑器负责写代码，解释器负责执行代码。
 
@@ -27,7 +35,7 @@ python
 
 通常会看到版本说明和 `>>>` 提示符。在 `>>>` 后可以输入 `print("hello world")`，输入 `exit()` 并按回车可退出交互模式。
 
-### 2.2 分清终端提示符与 Python 提示符
+### 补充：分清终端提示符与 Python 提示符
 
 | 看到的提示符 | 所在位置 | 应该输入什么 |
 | --- | --- | --- |
@@ -37,7 +45,17 @@ python
 
 这些提示符是程序显示的，**复制命令时不用复制提示符**。不能仅凭“显示了路径”判断环境，要结合 `PS`、`>>>` 等完整提示。
 
-### 2.3 读懂 print()
+## 2 print
+
+```python
+print ("Hello World")
+```
+运行结果：
+```text
+Hello World
+```
+
+### 补充：读懂 print()
 
 ```python
 print("hello world")
@@ -58,9 +76,43 @@ hello world
 
 `print()` 默认在输出结束后换行；`Hello World` 与 `hello world` 的大小写不同，输出也不同。参见 [Python print() 文档](https://docs.python.org/3.13/library/functions.html#print)。
 
-## 3. 代码与输出
+### 补充：直接使用绝对路径
 
-### 3.1 运行当前目录中的 hello.py
+**运行位置：任意目录的 PowerShell 终端。**
+
+```powershell
+python "D:\专业技能\learning-journey\python\黑马python+AI\p0\04\hello.py"
+```
+
+输出仍然是 `hello world`。文件路径较长时，用英文双引号包住路径，尤其适合包含空格的目录。
+
+原笔记里“在文件资源管理器地址栏输入 `cmd`”也是进入文件所在目录的一种方式。当前使用 VS Code 时，直接使用内置终端即可，以上示例统一采用 PowerShell。
+
+### 补充：本课代码检查结论
+
+**命名、表达和效率：**当前可执行代码没有自定义变量，无需强行改名；未发现需要修复的语法或逻辑问题。print与引号拼写正常，无内置名称遮蔽。多个输出示例保留作教学比较；固定少量输出无值得提速的瓶颈，没有做性能基准。
+
+## 3 多行代码放在.py文件里面
+
+hello.py
+
+### 方法一,手动切换目录
+
+执行命令行：
+```cmd
+cd 文件所在目录
+python hello.py
+```
+
+### 方法二
+
+在hello.py所在资源管理器地址栏输入cmd(会直接进入当前目录)
+然后运行
+```cmd
+python hello.py
+```
+
+### 补充：运行当前目录中的 hello.py
 
 同目录 `hello.py` 的现有内容是：
 
@@ -71,7 +123,7 @@ print("hello world")
 **运行位置：VS Code 的 PowerShell 终端。** 先进入文件所在目录，再执行脚本：
 
 ```powershell
-cd "D:\专业技能\learning-journey\python\黑马python+AI\04"
+cd "D:\专业技能\learning-journey\python\黑马python+AI\p0\04"
 python .\hello.py
 ```
 
@@ -85,19 +137,7 @@ python .\hello.py
 hello world
 ```
 
-### 3.2 补充：直接使用绝对路径
-
-**运行位置：任意目录的 PowerShell 终端。**
-
-```powershell
-python "D:\专业技能\learning-journey\python\黑马python+AI\04\hello.py"
-```
-
-输出仍然是 `hello world`。文件路径较长时，用英文双引号包住路径，尤其适合包含空格的目录。
-
-原笔记里“在文件资源管理器地址栏输入 `cmd`”也是进入文件所在目录的一种方式。当前使用 VS Code 时，直接使用内置终端即可，以上示例统一采用 PowerShell。
-
-## 4. 易错点
+### 补充：易错点
 
 | 容易混淆 | 正确理解 |
 | --- | --- |
@@ -121,3 +161,16 @@ python "D:\专业技能\learning-journey\python\黑马python+AI\04\hello.py"
 - **补充：**提示符辨认、路径解释和自测，未修改原代码。
 - 官方资料：[Python 解释器使用](https://docs.python.org/3.13/tutorial/interpreter.html)、[交互模式](https://docs.python.org/3.13/tutorial/appendix.html#interactive-mode)。
 
+## 附：既有源码与核验记录 / 当前源文件：hello.py
+
+```python
+print("hello world")
+```
+
+使用内存执行实际核验，输出如下；未修改原文件：
+
+```text
+hello world
+```
+
+**命名、表达和效率：**当前可执行代码没有自定义变量，无需强行改名；未发现需要修复的语法或逻辑问题。print与引号拼写正常，无内置名称遮蔽。多个输出示例保留作教学比较；固定少量输出无值得提速的瓶颈，没有做性能基准。

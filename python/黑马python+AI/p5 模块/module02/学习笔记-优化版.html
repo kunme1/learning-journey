@@ -1,0 +1,132 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>module02（优化版）</title><style>html{color-scheme:light}body{margin:0;background:#f5f7fb;color:#202b3c;font:17px/1.8 "Microsoft YaHei","Segoe UI",sans-serif}main{max-width:1100px;margin:35px auto;padding:40px 52px;background:white;border:1px solid #dde3ee;border-radius:12px}h1{font-size:30px;line-height:1.4}h2{margin-top:36px;padding-bottom:8px;border-bottom:1px solid #dde3ee;font-size:24px}h3{font-size:20px}a{color:#175bc1;overflow-wrap:anywhere}blockquote{border-left:4px solid #6090d0;margin:20px 0;padding:8px 18px;background:#f2f6fd}pre{padding:18px;background:#152235;color:#eef4ff;border-radius:8px;overflow:auto;line-height:1.55;font-size:14px}code{font-family:Consolas,"Microsoft YaHei",monospace}p>code,li>code,td>code{background:#eef2f7;padding:2px 5px;border-radius:3px}img{max-width:100%;height:auto;display:block;margin:18px auto;border:1px solid #d9e1ed}table{width:100%;border-collapse:collapse;display:block;overflow:auto;font-size:14px;line-height:1.6;margin:20px 0}th,td{border:1px solid #d5deeb;padding:10px;text-align:left;vertical-align:top;min-width:90px}th{background:#eaf0fa}tr:nth-child(even){background:#fafbfe}@media(max-width:760px){main{margin:0;padding:20px 17px;border:0}body{font-size:16px}h1{font-size:26px}}</style><main><h1>module02（优化版）</h1>
+<blockquote>
+<p>整理日期：2026-11-24（北京时间）；截止／首次扫描：2026-11-24T01:55:08+08:00。课节首次学习日期未完整登记，历史资料补齐，原学习日期未确认；相关问答另按11月23日、24日的可靠记录标注。采用首次读取快照，不能还原消息发送瞬间版本。
+来源：<a href="main.py">main.py</a>；<a href="my_fun.py">my_fun.py</a>。原始笔记、代码、图片保留。下文补充不表示用户已掌握或执行。</p>
+</blockquote>
+<h2>模块定义与导出</h2>
+<p>对应P75。先读被导入的工具模块，再沿入口调用顺序解释。</p>
+<h3>原始代码：<a href="my_fun.py">my_fun.py</a></h3>
+<pre><code class="language-python"># __all__ 指定 from ... import * 导入的是哪些功能；以lit[str]形式写入
+
+__all__ = ["log_separator1", "log_separator3", "PI"]
+
+# 常量(不会发生变化的数据; 常量的名称为全部大写; 但是可以修改，一般不修改)
+PI = 3.1415926
+NAME = "kunme1"
+
+# NAME = "kunmei"
+
+# print(NAME)
+
+
+# 函数
+# *： 字符串重复输出
+def log_separator1():
+    print("- " * 30)
+
+
+def log_separator2():
+    print("+" * 30)
+
+
+def log_separator3():
+    print("#" * 30)
+
+
+def log_separator4():
+    print("*" * 30)
+
+# 测试函数
+# __name__：Python中内置变量，表示当前模块的名字（直接运行当前模块，__name__ 的值为 "__main__"；当该模块被导入时，__name__ 的值就是模块名）
+# 执行当前文件，则会执行如下代码；如果被当做模块导入，如下代码不执行；
+# 自定义代码片段，输入main然后enter
+
+if __name__ == "__main__":
+    log_separator1()
+</code></pre>
+<p>定义__all__、PI、NAME及四个函数时，函数体尚未执行。只有直接运行my_fun.py，入口保护才调用第1个函数；作为my_fun导入则不打印。__all__只筛星号导入，不阻止明确导入第2／4个函数。首行 <code>lit[str]</code> 应写 <code>list[str]</code>，这是注释拼写错误。</p>
+<h3>原始代码：<a href="main.py">main.py</a></h3>
+<pre><code class="language-python"># # 导入模块,会执行模块中非函数体的代码
+# import my_fun as mf
+
+# # 使用模块中的功能
+# mf.log_separator1()
+
+# print(mf.PI)
+# print(mf.NAME)
+
+# 导入自定义模块中的功能
+# from my_fun import log_separator1,log_separator3,PI,NAME
+from my_fun import *
+import random
+
+# 使用模块中的功能
+print(PI)
+
+log_separator1()
+# log_separator2()
+log_separator3()
+# log_separator4()
+</code></pre>
+<p>当前main导入1、3、PI，先打印3.1415926，再输出 <code>"- " * 30</code> 和 <code>"#" * 30</code>。random未使用；注释中的多种导入方式仍有教学价值，不算应全部删除的重复。</p>
+<h3>建议改写：<a href="main-优化版.py">main-优化版.py</a></h3>
+<p><strong>可读性改进：</strong>通配改显式导入；移除未用random；加入口保护。直接运行输出与原一致；被当模块导入时从原本打印变为静默，这是明确的行为变化。优化main依赖同目录原my_fun，不要求另复制工具模块。</p>
+<pre><code class="language-python">"""来源：main.py；配套：学习笔记-优化版.md。
+整理日期：2026-11-24；原始文件保留。
+"""
+
+# 原main.py：from my_fun import *；import random（未使用）。
+# 显式列出实际使用的三个名字，读者能追踪来源，也不受以后__all__变动隐式影响。
+# 用的是同目录保留的原my_fun.py；NAME和其他演示函数没有被删除。
+from my_fun import PI, log_separator1, log_separator3
+
+# 原顶层直接打印；入口保护使被导入时不打印，直接运行输出保持。
+if __name__ == "__main__":
+    print(PI)
+    log_separator1()
+    log_separator3()
+</code></pre>
+<p><strong>补充（参考课程资料）：</strong>常量大写是约定而不是防修改机制；<code>__name__</code>表示当前模块身份，入口保护让可复用定义与演示调用分离。这里函数打印分隔线，默认返回None；不是返回分隔字符串。固定短输出没有值得专门优化的算法问题。</p>
+<h2>代码、命名与效率检查</h2>
+<p>逐文件检查main和my_fun。当前__all__只导出1、3、PI，原main恰好只用这些，运行无错。未使用random可移除。my_fun首注释lit[str]确实少s，应为list[str]；仅在笔记纠正，原文件保留，未为一个注释单独造优化脚本。四个分隔函数是比较演示，不强制合并。</p>
+<table>
+<thead>
+<tr>
+<th>原名</th>
+<th>建议／保留</th>
+<th>中文含义</th>
+<th>位置</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lit[str]</td>
+<td>list[str]</td>
+<td>字符串列表类型</td>
+<td>my_fun.py首行注释</td>
+<td>确实拼错，不影响当前注释状态下运行</td>
+</tr>
+<tr>
+<td>PI / NAME</td>
+<td>保留</td>
+<td>圆周率／样本名称</td>
+<td>my_fun.py常量区</td>
+<td>大写常量约定，NAME的数据kunme1不是待纠正拼写</td>
+</tr>
+<tr>
+<td>log_separator1…4</td>
+<td>保留教学编号</td>
+<td>输出分隔线</td>
+<td>四个函数</td>
+<td>编号匹配演示和all，当前不为短函数强行抽象</td>
+</tr>
+</tbody>
+</table>
+<p>检查包含英文拼写、含义、缩写、大小写与下划线、单位及内置名遮蔽；除表中所列，未发现需要修改的问题。样本用户名和数据保持。未测性能，不把更短或改名当作提速。</p>
+<h2>参考与补漏</h2>
+<p>本次实际核对下载课程 BV1sHU9BmEne 的对应小节；参考包由 Video2Book 二次整理，纠正处与原意分开标注。不是整册已学范围。</p>
+<ul>
+<li><a href="../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/textbooks/模块13_模块与包：跨文件代码组织与导入机制_精读全书.md">模块13_模块与包：跨文件代码组织与导入机制_精读全书.md</a>：P75：329—493行，自定义模块、<strong>name__和__all</strong>。</li>
+<li><a href="../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/notes/笔记07_模块化组织与面向对象编程_笔记.md">笔记07_模块化组织与面向对象编程_笔记.md</a>：P75：自定义模块小节。</li>
+</ul></main></html>
