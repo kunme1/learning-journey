@@ -1,17 +1,20 @@
 <!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>utils（优化版）</title><style>html{color-scheme:light}body{margin:0;background:#f5f7fb;color:#202b3c;font:17px/1.8 "Microsoft YaHei","Segoe UI",sans-serif}main{max-width:1100px;margin:35px auto;padding:40px 52px;background:white;border:1px solid #dde3ee;border-radius:12px}h1{font-size:30px;line-height:1.4}h2{margin-top:36px;padding-bottom:8px;border-bottom:1px solid #dde3ee;font-size:24px}h3{font-size:20px}a{color:#175bc1;overflow-wrap:anywhere}blockquote{border-left:4px solid #6090d0;margin:20px 0;padding:8px 18px;background:#f2f6fd}pre{padding:18px;background:#152235;color:#eef4ff;border-radius:8px;overflow:auto;line-height:1.55;font-size:14px}code{font-family:Consolas,"Microsoft YaHei",monospace}p>code,li>code,td>code{background:#eef2f7;padding:2px 5px;border-radius:3px}img{max-width:100%;height:auto;display:block;margin:18px auto;border:1px solid #d9e1ed}table{width:100%;border-collapse:collapse;display:block;overflow:auto;font-size:14px;line-height:1.6;margin:20px 0}th,td{border:1px solid #d5deeb;padding:10px;text-align:left;vertical-align:top;min-width:90px}th{background:#eaf0fa}tr:nth-child(even){background:#fafbfe}@media(max-width:760px){main{margin:0;padding:20px 17px;border:0}body{font-size:16px}h1{font-size:26px}}</style><main><h1>utils（优化版）</h1>
 <blockquote>
-<p>整理日期：2026-11-24（北京时间）；截止／首次扫描：2026-11-24T01:55:08+08:00。课节首次学习日期未完整登记，历史资料补齐，原学习日期未确认；相关问答另按11月23日、24日的可靠记录标注。采用首次读取快照，不能还原消息发送瞬间版本。
+<p>整理日期：2026-11-27（北京时间），复盘归属2026-11-26；截止／首次扫描：2026-11-27T00:17:17+08:00。课节首次学习日期未完整登记，历史资料补齐，原学习日期未确认；相关问答另按11月23日、24日的可靠记录标注。采用首次读取快照，不能还原消息发送瞬间版本。
 来源：<a href="my_fun.py">my_fun.py</a>；<a href="my_var.py">my_var.py</a>；<a href="__init__.py"><strong>init</strong>.py</a>。原始笔记、代码、图片保留。下文补充不表示用户已掌握或执行。</p>
 </blockquote>
+<h2>本轮增量：只抑制静态诊断，不改运行导入</h2>
+<p>原文件新增 <code># pyright: ignore[reportUnsupportedDunderAll]</code>，与11月24日旧稿相比只是注释变化。它针对这一行对应的静态诊断，不执行显式相对导入；普通import与星号导入行为不变。本轮在临时包重验：普通import未提前绑定子模块、star按all加载两子模块。当前Pylance界面未复测，不能说黄线已确认消失。</p>
+<p>下方已有 <code>__init__-优化版.py</code> 是11月24日交付的<strong>可选显式初始化方案</strong>，仍有意义，不代表原文件已经采用；本轮保留，不重新生成另一份初始化脚本。教材和复习笔记将“无all就不能星号导入”过度概括，沿用旧稿的准确说明：语句可合法执行，只是不自动扫描加载所有子文件。单行忽略注释不负责实现运行机制。</p>
 <h2>普通包初始化与公开接口（P76）</h2>
 <h3>原始代码：<a href="__init__.py"><strong>init</strong>.py</a></h3>
 <pre><code class="language-python"># 描述包信息
 __version__ = "1.0.0"
 __author__ = "kunme1"
 
-__all__ = ["my_fun", "my_var"]
+__all__ = ["my_fun", "my_var"] # pyright: ignore[reportUnsupportedDunderAll]
 </code></pre>
-<p>当前仅声明元数据和__all__，没有 <code>from . import my_fun, my_var</code>。新进程中 <code>import utils</code> 先执行init；此时不保证utils.my_fun存在。随后 <code>from utils import *</code> 可以依据清单加载现有子模块，再把模块名绑定给调用方。不要把“只写all能星号导入”错说成“只写all已提前导入所有子模块”。</p>
+<p>当前声明元数据和__all__，并在__all__行添加单行Pyright抑制注释，没有 <code>from . import my_fun, my_var</code>。新进程中 <code>import utils</code> 先执行init；此时不保证utils.my_fun存在。随后 <code>from utils import *</code> 可以依据清单加载现有子模块，再把模块名绑定给调用方。不要把“只写all能星号导入”错说成“只写all已提前导入所有子模块”。</p>
 <h3>建议改写：<a href="__init__-优化版.py"><strong>init</strong>-优化版.py</a></h3>
 <p><strong>可读性／接口明确化：</strong>新增显式相对导入，明确包导出来源，保留metadata和all。文件名保留 <code>__init__-优化版.py</code> 供对照，不会自动替代真正init；若采用，核心为在原init元数据前添加 <code>from . import my_fun, my_var</code>。直接运行对照文件走另一分支以便独立运行。完整初始化方案在临时副本采用为init后验证，不改原包。</p>
 <pre><code class="language-python">"""来源：__init__.py；配套：学习笔记-优化版.md。
@@ -118,4 +121,10 @@ NAME = "kunme1"
 <li><a href="../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/textbooks/模块13_模块与包：跨文件代码组织与导入机制_精读全书.md">模块13_模块与包：跨文件代码组织与导入机制_精读全书.md</a>：P76：499—553、585—681行，包和搜索路径。</li>
 <li><a href="../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/notes/笔记07_模块化组织与面向对象编程_笔记.md">笔记07_模块化组织与面向对象编程_笔记.md</a>：P76：包小节，止于204行。</li>
 <li><a href="../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/subtitles/P76_76. 核心语法-模块-包(package)_clean.txt">P76_76. 核心语法-模块-包(package)_clean.txt</a>：全文：核对无__init__、__all__及“相对／绝对路径”的教学简化说法；未看视频。</li>
-</ul></main></html>
+</ul>
+<h3>2026-11-27实际增量参考</h3>
+<ul>
+<li><a href="../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/textbooks/模块13_模块与包：跨文件代码组织与导入机制_精读全书.md">模块13_模块与包：跨文件代码组织与导入机制_精读全书.md</a>：581—628行，包通配导入教学说法。</li>
+<li><a href="../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/notes/笔记07_模块化组织与面向对象编程_笔记.md">笔记07_模块化组织与面向对象编程_笔记.md</a>：183—204行，包导入；旧稿已有纠正保留。</li>
+</ul>
+<p>旧稿其他来源与运行记录属于11月24日；本轮只刷新原init展示、注释语义及导入对照，不声称重新看过旧逐字稿或编辑器界面。</p></main></html>

@@ -54,8 +54,7 @@ class ShoppingCart:
                 '''
                 
                 if price > 0 and num > 0:
-                    g.price = price
-                    g.num = num
+                    g.update_goods(price, num)
                     return
 
                 else:

@@ -1,0 +1,69 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>83 添加学生信息（优化版）</title><style>html{color-scheme:light}body{margin:0;background:#f5f7fb;color:#202b3c;font:17px/1.8 "Microsoft YaHei","Segoe UI",sans-serif}main{max-width:1100px;margin:35px auto;padding:40px 52px;background:white;border:1px solid #dde3ee;border-radius:12px}h1{font-size:30px;line-height:1.4}h2{margin-top:36px;padding-bottom:8px;border-bottom:1px solid #dde3ee;font-size:24px}h3{font-size:20px}a{color:#175bc1;overflow-wrap:anywhere}blockquote{border-left:4px solid #6090d0;margin:20px 0;padding:8px 18px;background:#f2f6fd}pre{padding:18px;background:#152235;color:#eef4ff;border-radius:8px;overflow:auto;line-height:1.55;font-size:14px}code{font-family:Consolas,"Microsoft YaHei",monospace}p>code,li>code,td>code{background:#eef2f7;padding:2px 5px;border-radius:3px}img{max-width:100%;height:auto;display:block;margin:18px auto;border:1px solid #d9e1ed}table{width:100%;border-collapse:collapse;display:block;overflow:auto;font-size:14px;line-height:1.6;margin:20px 0}th,td{border:1px solid #d5deeb;padding:10px;text-align:left;vertical-align:top;min-width:90px}th{background:#eaf0fa}tr:nth-child(even){background:#fafbfe}@media(max-width:760px){main{margin:0;padding:20px 17px;border:0}body{font-size:16px}h1{font-size:26px}}</style><main><h1>83 添加学生信息（优化版）</h1>
+<blockquote>
+<p>复盘归属：2026-11-26；实际整理日期：2026-11-27（北京时间）。截止／首次扫描：2026-11-27T00:17:17+08:00。无法恢复昨天结束时的版本，按首次读取快照整理。课节首次学习日期未登记完整，历史资料补齐，原学习日期未确认；问答发生日期按共享记录单列，不把全部课节认作昨日新学。
+来源：<a href="83 添加学生信息.py">83 添加学生信息.py</a>；<a href="83 添加学生信息.md">83 添加学生信息.md</a>。原文、代码与图片保留；补充与建议不表示用户已经掌握或运行。</p>
+</blockquote>
+<p>原笔记“见82”。完整来源与可运行建议在<a href="../82 准备/82 准备-优化版.html">82独立笔记</a>，本课只沿添加流程展开，不另复制整套系统。</p>
+<h2>查重、录入、校验与添加</h2>
+<p><strong>关联原始代码（来源82的EduManagement.add_student，不是本目录空脚本）：</strong></p>
+<pre><code class="language-python">    def add_student(self):
+        name = input("请输入学生姓名: ")
+
+        # 判断学生姓名是否存在, 如果存在,则添加失败(不能重复添加)
+        for s in self.student_list:
+            if s.name == name:
+                print("该学生已存在,添加失败")
+                break# return
+
+        chinese = int(input("请输入学生语文成绩: "))
+        math = int(input("请输入学生数学成绩: "))
+        english = int(input("请输入学生英语成绩: "))
+
+        # 判断分数是否在0-100之间
+        if 0 &lt;= chinese &lt;= 100 and 0 &lt;= math &lt;= 100 and 0 &lt;= english &lt;= 100:
+            stu = student(name, chinese, math, english)
+            self.student_list.append(stu)
+            print("学生信息添加成功 ~")
+        else: 
+            print("各科成绩必须在 0 - 100 之间 !")
+</code></pre>
+<p>输入name后，s是学生对象，<code>s.name == name</code>才比较姓名。当前break造成循环后继续添加；用return后，找到重复立即结束方法。范围条件已正确包含0、100，且三科用and保证全部满足。</p>
+<p><strong>错误修复的直接替换片段（放在add_student读取三科之前）：</strong></p>
+<pre><code class="language-python">for s in self.student_list:
+    if s.name == name:
+        print("该学生已存在,添加失败")
+        return
+</code></pre>
+<p><strong>另一种有效思路（11月26日问答）：</strong>for…else的else必须与for对齐，自然结束才执行；不是if的else。若只将return换回break而不移动后续添加，问题仍在。完整可运行修复和ValueError处理见<a href="../82 准备/82 准备-优化版.py">82 准备-优化版.py</a>。</p>
+<h3>原始代码：<a href="83 添加学生信息.py">83 添加学生信息.py</a></h3>
+<p>原脚本为空，无本地活动代码；不虚构运行结果。</p>
+<p><strong>补充（参考课程资料）：</strong>先查重可以省去失败路径上的三次成绩输入。并非凭空提速结论，而是减少可数的用户交互次数；查找仍O(n)。</p>
+<h2>代码检查、英文命名与效率</h2>
+<p>本目录.py为空，原.md“见82”；实际添加逻辑位于82文件，检查结论共用82，不生成第二份相同完整系统。独立笔记只展开本课的查重与添加。</p>
+<table>
+<thead>
+<tr>
+<th>原名</th>
+<th>建议／保留</th>
+<th>中文含义</th>
+<th>位置</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>s / stu</td>
+<td>本课可保留</td>
+<td>已有学生对象／待添加对象</td>
+<td>82的add_student</td>
+<td>不能将对象本身直接与姓名字符串比较</td>
+</tr>
+</tbody>
+</table>
+<p>检查涵盖拼写、含义、缩写、大小写／下划线、单位、关键字与内置名遮蔽。除表列项，未发现需要修改的问题；样本数据不擅改。没有性能计时，不把改名或少几行说成提速。</p>
+<h2>参考与补漏</h2>
+<p>本次实际核对下载课程 BV1sHU9BmEne 的对应小节；Video2Book二次整理仅作线索，纠正另行标明，不把整册后续内容算本课遗漏。未观看原视频。</p>
+<ul>
+<li><a href="../../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/textbooks/模块15_面向对象综合案例：教务管理系统全流程实现_精读全书.md">模块15_面向对象综合案例：教务管理系统全流程实现_精读全书.md</a>：P83，226—444行；查重和添加。</li>
+<li><a href="../../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/notes/笔记08_面向对象综合项目教务管理系统与异常处理_笔记.md">笔记08_面向对象综合项目教务管理系统与异常处理_笔记.md</a>：109—132行，添加成绩。</li>
+</ul></main></html>
