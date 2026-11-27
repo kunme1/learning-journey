@@ -1,9 +1,10 @@
 <!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>85 运行测试（优化版）</title><style>html{color-scheme:light}body{margin:0;background:#f5f7fb;color:#202b3c;font:17px/1.8 "Microsoft YaHei","Segoe UI",sans-serif}main{max-width:1100px;margin:35px auto;padding:40px 52px;background:white;border:1px solid #dde3ee;border-radius:12px}h1{font-size:30px;line-height:1.4}h2{margin-top:36px;padding-bottom:8px;border-bottom:1px solid #dde3ee;font-size:24px}h3{font-size:20px}a{color:#175bc1;overflow-wrap:anywhere}blockquote{border-left:4px solid #6090d0;margin:20px 0;padding:8px 18px;background:#f2f6fd}pre{padding:18px;background:#152235;color:#eef4ff;border-radius:8px;overflow:auto;line-height:1.55;font-size:14px}code{font-family:Consolas,"Microsoft YaHei",monospace}p>code,li>code,td>code{background:#eef2f7;padding:2px 5px;border-radius:3px}img{max-width:100%;height:auto;display:block;margin:18px auto;border:1px solid #d9e1ed}table{width:100%;border-collapse:collapse;display:block;overflow:auto;font-size:14px;line-height:1.6;margin:20px 0}th,td{border:1px solid #d5deeb;padding:10px;text-align:left;vertical-align:top;min-width:90px}th{background:#eaf0fa}tr:nth-child(even){background:#fafbfe}@media(max-width:760px){main{margin:0;padding:20px 17px;border:0}body{font-size:16px}h1{font-size:26px}}</style><main><h1>85 运行测试（优化版）</h1>
 <blockquote>
-<p>复盘归属：2026-11-26；实际整理日期：2026-11-27（北京时间）。截止／首次扫描：2026-11-27T00:17:17+08:00。无法恢复昨天结束时的版本，按首次读取快照整理。课节首次学习日期未登记完整，历史资料补齐，原学习日期未确认；问答发生日期按共享记录单列，不把全部课节认作昨日新学。
+<p>首次复盘归属：2026-11-26；本次增量归属2026-11-27。截止／首次扫描：2026-11-27T04:36:38+08:00。无法恢复昨天结束时的版本，按首次读取快照整理。课节首次学习日期未登记完整，历史资料补齐，原学习日期未确认；问答发生日期按共享记录单列，不把全部课节认作昨日新学。
 来源：<a href="85 运行测试.py">85 运行测试.py</a>；<a href="85 运行测试.md">85 运行测试.md</a>；<a href="练习.Py">练习.Py</a>。原文、代码与图片保留；补充与建议不表示用户已经掌握或运行。</p>
 </blockquote>
 <p>原笔记先写“见82”，再进入练习；沿此顺序整理。</p>
+<p><strong>2026-11-27增量：</strong>练习.Py修改商品时已从两次直接赋值改为g.update_goods；同步原始代码展示与建议版注释。其他原材料未变，沿用此前已验证结论；异常转换示例仍在三引号字符串中，不是活动处理。本次按当前版本补测购物车，不重写此前全部课节。</p>
 <h2>教务系统运行测试</h2>
 <h3>从对象到业务方法</h3>
 <p><code>student</code>保存name和三科成绩；<code>__str__</code>临时求和显示总分，不另存易过期的total。<code>update_score(...=None)</code>只更新非None参数，<strong>0分有效，不能改成if chinese:</strong>。系统的student_list放在__init__里，各系统实例各自持有列表。</p>
@@ -443,8 +444,7 @@ class ShoppingCart:
                 '''
 
                 if price &gt; 0 and num &gt; 0:
-                    g.price = price
-                    g.num = num
+                    g.update_goods(price, num)
                     return
 
                 else:
@@ -500,7 +500,7 @@ shopping_Cart.run()
 </code></pre>
 <p>当前已用 <code>ShoppingCart()</code> 建实例、列表装goods对象、按g.name查找、重复时return、商品更新方法写self.num、删除命中立即return。这些已改正确，不重复诊断旧聊天版本的问题。修改中的三引号try示例只是一个未执行字符串，不是活动异常处理；前面裸int仍可ValueError。</p>
 <h3>Python优化版：<a href="练习-优化版.py">练习-优化版.py</a></h3>
-<p><strong>前瞻／维护性改进：</strong>抽出_read_price_quantity供添加与修改复用，捕获ValueError并取消本次录入返回菜单；仍只接受原练习的正整数价格与数量，不擅自放宽为小数价格。已有 <code>g.price=price; g.num=num</code> 正确，但等价改为 <code>g.update_goods(price,num)</code>，更新规则集中到商品类。Goods／shopping_cart命名同步；入口保护让import不启动菜单。正常有效输入输出保持，非法输入由异常中止变成提示；原三引号备用代码不再重复留在活动方法里，来源原样保留在上方。</p>
+<p><strong>前瞻／维护性改进：</strong>抽出_read_price_quantity供添加与修改复用，捕获ValueError并取消本次录入返回菜单；仍只接受原练习的正整数价格与数量，不擅自放宽为小数价格。原文件现已采用 <code>g.update_goods(price,num)</code>，保留这一项；此前两次直接赋值也合法，更新规则集中到商品类。Goods／shopping_cart命名同步；入口保护让import不启动菜单。正常有效输入输出保持，非法输入由异常中止变成提示；原三引号备用代码不再重复留在活动方法里，来源原样保留在上方。</p>
 <pre><code class="language-python">"""来源：练习.Py；配套：85 运行测试-优化版.md。
 复盘归属：2026-11-26；整理日期：2026-11-27（北京时间）。原始文件保留。
 """
@@ -568,7 +568,8 @@ class ShoppingCart:
                 price, num = values
 
                 if price &gt; 0 and num &gt; 0:
-                    # 原两次直接赋值正确；复用商品对象已有方法，把更新规则集中在一处。
+                    # 此前原版两次直接赋值正确；本轮原文件已采用g.update_goods，保留这项改进。
+                    # 复用商品对象已有方法，把更新规则集中在一处。
                     g.update_goods(price, num)
                     return
 
@@ -711,4 +712,9 @@ if __name__ == "__main__":
 <ul>
 <li><a href="../../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/textbooks/模块15_面向对象综合案例：教务管理系统全流程实现_精读全书.md">模块15_面向对象综合案例：教务管理系统全流程实现_精读全书.md</a>：P85，625—827行；菜单测试和购物车练习。</li>
 <li><a href="../../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/notes/笔记08_面向对象综合项目教务管理系统与异常处理_笔记.md">笔记08_面向对象综合项目教务管理系统与异常处理_笔记.md</a>：177—199行，运行方法和测试路线。</li>
+</ul>
+<h3>本次增量参考</h3>
+<ul>
+<li><a href="../../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/textbooks/模块15_面向对象综合案例：教务管理系统全流程实现_精读全书.md">模块15_面向对象综合案例：教务管理系统全流程实现_精读全书.md</a>：P85购物车练习，807—827行。</li>
+<li><a href="../../../../../../参考资料/黑马Python-AI课程笔记/计算机/编程语言/黑马程序员-Python-AI/notes/笔记08_面向对象综合项目教务管理系统与异常处理_笔记.md">笔记08_面向对象综合项目教务管理系统与异常处理_笔记.md</a>：购物车同构练习小节；旧有效评审保留。</li>
 </ul></main></html>

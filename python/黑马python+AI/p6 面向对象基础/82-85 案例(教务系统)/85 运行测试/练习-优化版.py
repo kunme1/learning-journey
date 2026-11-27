@@ -65,7 +65,8 @@ class ShoppingCart:
                 price, num = values
 
                 if price > 0 and num > 0:
-                    # 原两次直接赋值正确；复用商品对象已有方法，把更新规则集中在一处。
+                    # 此前原版两次直接赋值正确；本轮原文件已采用g.update_goods，保留这项改进。
+                    # 复用商品对象已有方法，把更新规则集中在一处。
                     g.update_goods(price, num)
                     return
 
